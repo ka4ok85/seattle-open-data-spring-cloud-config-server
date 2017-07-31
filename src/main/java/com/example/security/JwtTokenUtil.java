@@ -45,7 +45,6 @@ public class JwtTokenUtil implements Serializable {
 			final Claims claims = getClaimsFromToken(token);
 			username = claims.getSubject();
 		} catch (Exception e) {
-			System.out.println("Error message" + e.getMessage());
 			username = null;
 		}
 

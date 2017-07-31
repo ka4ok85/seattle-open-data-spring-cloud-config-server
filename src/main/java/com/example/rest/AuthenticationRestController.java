@@ -39,16 +39,16 @@ public class AuthenticationRestController {
 
 		WebAuthenticationDetailsSourceImpl webAuthenticationDetailsSourceImpl = new WebAuthenticationDetailsSourceImpl();
 		JwtAuthenticationRequest authenticationRequest = webAuthenticationDetailsSourceImpl.buildDetails(request);
-		UsernamePasswordAuthenticationToken token1 = new UsernamePasswordAuthenticationToken(
+		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-		token1.setDetails(authenticationRequest);
-		Authentication authentication = authenticationManager.authenticate(token1);
+		authToken.setDetails(authenticationRequest);
+		Authentication authentication = authenticationManager.authenticate(authToken);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		JwtUser userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		final String token = jwtTokenUtil.generateToken(userDetails, device);
+		final String jwt = jwtTokenUtil.generateToken(userDetails, device);
 
-		return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
 	}
 }
